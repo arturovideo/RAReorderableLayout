@@ -93,6 +93,12 @@ open class RAReorderableLayout: UICollectionViewFlowLayout, UIGestureRecognizerD
         set { collectionView?.dataSource = dataSource }
         get { return collectionView?.dataSource as? RAReorderableLayoutDataSource }
     }
+
+    public var minimumPressDuration: CFTimeInterval = 0.5 {
+        didSet {
+            self.longPress?.minimumPressDuration = self.minimumPressDuration
+        }
+    }
     
     fileprivate var displayLink: CADisplayLink?
     
@@ -356,6 +362,7 @@ open class RAReorderableLayout: UICollectionViewFlowLayout, UIGestureRecognizerD
         guard longPress == nil && panGesture == nil else {return }
         
         longPress = UILongPressGestureRecognizer(target: self, action: #selector(RAReorderableLayout.handleLongPress(_:)))
+        longPress?.minimumPressDuration = self.minimumPressDuration
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(RAReorderableLayout.handlePanGesture(_:)))
         longPress?.delegate = self
         panGesture?.delegate = self
